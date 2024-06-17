@@ -6,7 +6,7 @@
 /*   By: rukoltso <rukoltso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 12:24:28 by rukoltso          #+#    #+#             */
-/*   Updated: 2024/06/03 13:35:56 by rukoltso         ###   ########.fr       */
+/*   Updated: 2024/06/17 13:37:48 by rukoltso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,3 @@ void *safe_malloc(size_t size)
 		error_print("Malloc failed!");
 	return (ptr);
 }
-

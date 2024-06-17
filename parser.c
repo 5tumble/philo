@@ -29,7 +29,7 @@ static bool is_digit(char c)
 	return (c >= '0' && c <= '9');
 }
 
-static void parser(const char *av)
+static int parser(const char *av)
 {
 	int len;
 	const char *num;
@@ -64,12 +64,14 @@ static long my_atol (char *str)
 	return (num);
 }
 
+//1e3 conversion to ms
+
 void parse_input(t_data *data, char **av)
 {
 	data->philo_nbr = my_atol(av[1]);
-	data->time_to_die = my_atol(av[2]) * le3;
-	data->time_to_eat = my_atol(av[3]) * le3;
-	data->time_to_sleep = my_atol(av[4]) * le3;
+	data->time_to_die = my_atol(av[2]) * 1e3;
+	data->time_to_eat = my_atol(av[3]) * 1e3;
+	data->time_to_sleep = my_atol(av[4]) * 1e3;
 	if (data->time_to_die < 6e4 || data->time_to_eat < 6e4 || data->time_to_sleep < 6e4)
 		error_print("Error: timestamps must be > 60 ms");
 	if (av[5])
