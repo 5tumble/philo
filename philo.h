@@ -6,7 +6,7 @@
 /*   By: rukoltso <rukoltso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 11:44:29 by rukoltso          #+#    #+#             */
-/*   Updated: 2024/06/18 14:39:23 by rukoltso         ###   ########.fr       */
+/*   Updated: 2024/06/18 14:57:43 by rukoltso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,11 @@ void	write_status(t_status status, t_philo *philo);
 
 //sync.c
 void wait_all_threads(t_data *data);
+void	increase_long(t_mtx *mutex, long *value);
+bool	all_threads_running(t_mtx *mutex, long *threads, long philo_nbr);
+void	unsync_philos(t_philo *philo);
+
+//monitor.c
+void	*monitor_dinner(void *data);
 
 #endif
