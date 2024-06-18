@@ -6,22 +6,21 @@
 /*   By: rukoltso <rukoltso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 11:44:29 by rukoltso          #+#    #+#             */
-/*   Updated: 2024/06/18 14:57:43 by rukoltso         ###   ########.fr       */
+/*   Updated: 2024/06/18 15:28:32 by rukoltso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
+# include <errno.h>
 # include <limits.h>
 # include <pthread.h>
+# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
 # include <unistd.h>
-# include <stdbool.h>
-#include <errno.h>
-# include <sys/time.h>
 
 # define RED "\033[0;31m"
 # define GREEN "\033[0;32m"
@@ -36,15 +35,15 @@ typedef enum e_opcodes
 	CREATE,
 	JOIN,
 	DETACH,
-}	t_opcode;
+}						t_opcode;
 
-enum e_time
+enum					e_time
 {
 	SECOND,
 	MILLISECOND,
 	MICROSECOND,
-	
-}	t_time_code;
+
+}						t_time_code;
 
 typedef enum e_status
 {
@@ -54,7 +53,7 @@ typedef enum e_status
 	TAKE_FIRST_FORK,
 	TAKE_SECOND_FORK,
 	DIED,
-}			t_philo_status;
+}						t_philo_status;
 
 typedef pthread_mutex_t	t_mutex;
 typedef struct s_data	t_data;
@@ -80,7 +79,7 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	bool	threads_ready;
+	bool				threads_ready;
 	long				philo_nbr;
 	long				time_to_die;
 	long				time_to_eat;
@@ -88,47 +87,49 @@ typedef struct s_data
 	long				nbr_limit_meals;
 	long				start_time;
 	bool				end_time;
-	long		min_meals;
+	long				min_meals;
 	t_fork				*forks;
 	t_philo				*philos;
 	t_mutex				data_mutex;
-	pthread_t	monitor;
+	pthread_t			monitor;
 }						t_data;
 
-//parser.c
-void parse_input(t_data *data, char **av);
+// parser.c
+void					parse_input(t_data *data, char **av);
 
-//helper.c
-void error_print(char *str);
-void *safe_malloc(size_t size);
-long get_time(t_time_code time_code);
-void better_usleep(long usec, t_data *data);
-void	clean(t_data *data);
+// helper.c
+void					error_print(char *str);
+void					*safe_malloc(size_t size);
+long					get_time(t_time_code time_code);
+void					better_usleep(long usec, t_data *data);
+void					clean(t_data *data);
 
-//init.c
-void data_init(t_data *data);
+// init.c
+void					data_init(t_data *data);
 
-//safe.c
-void safe_thread(pthread_t *thread, void *(*func)(void *), void *arg, t_opcode opcode);
-void safe_mutex(t_mutex *mutex, t_opcode opcode);
+// safe.c
+void					safe_thread(pthread_t *thread, void *(*func)(void *),
+							void *arg, t_opcode opcode);
+void					safe_mutex(t_mutex *mutex, t_opcode opcode);
 
-//get_set.c
-void set_bool(t_mtx *mutex, bool *bol, bool value);
-bool get_bool(t_mtx *mutex, bool *val);
-long get_long(t_mtx *mutex, long *val);
-void set_long(t_mtx *mutex, long *val, long value);
-bool simulation_done(t_data *data);
+// get_set.c
+void					set_bool(t_mtx *mutex, bool *bol, bool value);
+bool					get_bool(t_mtx *mutex, bool *val);
+long					get_long(t_mtx *mutex, long *val);
+void					set_long(t_mtx *mutex, long *val, long value);
+bool					simulation_done(t_data *data);
 
-//status.c
-void	write_status(t_status status, t_philo *philo);
+// status.c
+void					write_status(t_status status, t_philo *philo);
 
-//sync.c
-void wait_all_threads(t_data *data);
-void	increase_long(t_mtx *mutex, long *value);
-bool	all_threads_running(t_mtx *mutex, long *threads, long philo_nbr);
-void	unsync_philos(t_philo *philo);
+// sync.c
+void					wait_all_threads(t_data *data);
+void					increase_long(t_mtx *mutex, long *value);
+bool					all_threads_running(t_mtx *mutex, long *threads,
+							long philo_nbr);
+void					unsync_philos(t_philo *philo);
 
-//monitor.c
-void	*monitor_dinner(void *data);
+// monitor.c
+void					*monitor_dinner(void *data);
 
 #endif

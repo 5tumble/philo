@@ -6,15 +6,15 @@
 /*   By: rukoltso <rukoltso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 12:24:28 by rukoltso          #+#    #+#             */
-/*   Updated: 2024/06/18 14:10:34 by rukoltso         ###   ########.fr       */
+/*   Updated: 2024/06/18 15:28:41 by rukoltso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long get_time(t_time_code time_code)
+long	get_time(t_time_code time_code)
 {
-	struct timeval tv;
+	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL))
 		error_print("Gettimeofday failed!");
@@ -29,7 +29,7 @@ long get_time(t_time_code time_code)
 	return (69);
 }
 
-void better_usleep(long usec, t_data *data)
+void	better_usleep(long usec, t_data *data)
 {
 	long	start;
 	long	elapsed;
@@ -52,15 +52,15 @@ void better_usleep(long usec, t_data *data)
 	}
 }
 
-void error_print(char *str)
+void	error_print(char *str)
 {
-	printf(RED"%s\n"RST, str);
+	printf(RED "%s\n" RST, str);
 	exit(EXIT_FAILURE);
 }
 
-void *safe_malloc(size_t size)
+void	*safe_malloc(size_t size)
 {
-	void *ptr;
+	void	*ptr;
 
 	ptr = malloc(size);
 	if (!ptr)

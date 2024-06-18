@@ -6,32 +6,26 @@
 /*   By: rukoltso <rukoltso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:40:12 by rukoltso          #+#    #+#             */
-/*   Updated: 2024/06/18 14:57:30 by rukoltso         ###   ########.fr       */
+/*   Updated: 2024/06/18 15:30:11 by rukoltso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/*
-Very boring but i guess have to manage all the sync stuff
-*/
-
-void wait_all_threads(t_data *data)
+void	wait_all_threads(t_data *data)
 {
 	while (!get_bool(&data->data->mutex, &data->threads_ready))
 		;
 }
 
 void	increase_long(t_mtx *mutex, long *value)
-{	
+{
 	safe_mutex(mutex, LOCK);
 	(*value)++;
 	safe_mutex(mutex, UNLOCK);
 }
 
-
-bool	all_threads_running(t_mtx *mutex, long *threads,
-		long philo_nbr)
+bool	all_threads_running(t_mtx *mutex, long *threads, long philo_nbr)
 {
 	bool	ret;
 
@@ -55,4 +49,4 @@ void	unsync_philos(t_philo *philo)
 		if (philo->id % 2)
 			thinking(philo, true);
 	}
-}	
+}
