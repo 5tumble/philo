@@ -6,7 +6,7 @@
 /*   By: rukoltso <rukoltso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 14:50:48 by rukoltso          #+#    #+#             */
-/*   Updated: 2024/06/18 15:29:14 by rukoltso         ###   ########.fr       */
+/*   Updated: 2024/06/24 13:36:20 by rukoltso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static bool	philo_died(t_philo *philo)
 	return (false);
 }
 
-void	*monitor_dinner(void *data)
+void	*monitor_dinner(void *nothing)
 {
 	int i;
 	t_data *data;

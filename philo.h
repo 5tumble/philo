@@ -6,7 +6,7 @@
 /*   By: rukoltso <rukoltso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 11:44:29 by rukoltso          #+#    #+#             */
-/*   Updated: 2024/06/18 15:28:32 by rukoltso         ###   ########.fr       */
+/*   Updated: 2024/06/24 13:40:35 by rukoltso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # define RED "\033[0;31m"
 # define GREEN "\033[0;32m"
 # define RST "\x1B[0m"
+# define LIGHT_GRAY "\033[37m"
 
 typedef enum e_opcodes
 {
@@ -37,7 +38,7 @@ typedef enum e_opcodes
 	DETACH,
 }						t_opcode;
 
-enum					e_time
+typedef enum					e_time
 {
 	SECOND,
 	MILLISECOND,
@@ -74,7 +75,7 @@ typedef struct s_philo
 	t_fork				*second_fork;
 	pthread_t			thread_id;
 	t_data				*data;
-	t_mtx				philo_mutex;
+	t_mutex				philo_mutex;
 }						t_philo;
 
 typedef struct s_data
@@ -88,9 +89,11 @@ typedef struct s_data
 	long				start_time;
 	bool				end_time;
 	long				min_meals;
+	long				threads_nbr;
 	t_fork				*forks;
 	t_philo				*philos;
 	t_mutex				data_mutex;
+	t_mutex				write_mutex;
 	pthread_t			monitor;
 }						t_data;
 
@@ -113,23 +116,22 @@ void					safe_thread(pthread_t *thread, void *(*func)(void *),
 void					safe_mutex(t_mutex *mutex, t_opcode opcode);
 
 // get_set.c
-void					set_bool(t_mtx *mutex, bool *bol, bool value);
-bool					get_bool(t_mtx *mutex, bool *val);
-long					get_long(t_mtx *mutex, long *val);
-void					set_long(t_mtx *mutex, long *val, long value);
+void					set_bool(t_mutex *mutex, bool *bol, bool value);
+bool					get_bool(t_mutex *mutex, bool *val);
+long					get_long(t_mutex *mutex, long *val);
+void					set_long(t_mutex *mutex, long *val, long value);
 bool					simulation_done(t_data *data);
 
 // status.c
-void					write_status(t_status status, t_philo *philo);
+void					write_status(t_philo_status status, t_philo *philo);
 
 // sync.c
 void					wait_all_threads(t_data *data);
-void					increase_long(t_mtx *mutex, long *value);
-bool					all_threads_running(t_mtx *mutex, long *threads,
+void					increase_long(t_mutex *mutex, long *value);
+bool					all_threads_running(t_mutex *mutex, long *threads,
 							long philo_nbr);
 void					unsync_philos(t_philo *philo);
 
 // monitor.c
-void					*monitor_dinner(void *data);
-
+void	*monitor_dinner(void *nothing);
 #endif
