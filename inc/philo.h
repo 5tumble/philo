@@ -6,7 +6,7 @@
 /*   By: rukoltso <rukoltso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 11:44:29 by rukoltso          #+#    #+#             */
-/*   Updated: 2024/06/24 13:40:35 by rukoltso         ###   ########.fr       */
+/*   Updated: 2024/06/27 16:28:43 by rukoltso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@
 
 # define RED "\033[0;31m"
 # define GREEN "\033[0;32m"
+# define CYAN "\033[0;36m"
+# define WHITE "\033[0;37m"
 # define RST "\x1B[0m"
-# define LIGHT_GRAY "\033[37m"
 
 typedef enum e_opcodes
 {
@@ -38,7 +39,7 @@ typedef enum e_opcodes
 	DETACH,
 }						t_opcode;
 
-typedef enum					e_time
+typedef enum e_time
 {
 	SECOND,
 	MILLISECOND,
@@ -51,8 +52,8 @@ typedef enum e_status
 	EATING,
 	SLEEPING,
 	THINKING,
-	TAKE_FIRST_FORK,
-	TAKE_SECOND_FORK,
+	TAKE_RIGHT_FORK,
+	TAKE_LEFT_FORK,
 	DIED,
 }						t_philo_status;
 
@@ -71,8 +72,8 @@ typedef struct s_philo
 	long				meals_counter;
 	bool				full;
 	long				last_meal;
-	t_fork				*first_fork;
-	t_fork				*second_fork;
+	t_fork				*left_fork;
+	t_fork				*right_fork;
 	pthread_t			thread_id;
 	t_data				*data;
 	t_mutex				philo_mutex;
@@ -85,10 +86,10 @@ typedef struct s_data
 	long				time_to_die;
 	long				time_to_eat;
 	long				time_to_sleep;
-	long				nbr_limit_meals;
+	long				nbr_limit_meals_counter;
 	long				start_time;
 	bool				end_time;
-	long				min_meals;
+	long				min_meals_counter;
 	long				threads_nbr;
 	t_fork				*forks;
 	t_philo				*philos;
@@ -97,11 +98,17 @@ typedef struct s_data
 	pthread_t			monitor;
 }						t_data;
 
+// dinner.c
+void					thinking(t_philo *philo, bool pre_simulation);
+void					*lone_philo(void *arg);
+void					*dinner_simulation(void *data);
+void					dinner_start(t_data *data);
+
 // parser.c
-void					parse_input(t_data *data, char **av);
+void					parse_input(t_data *data, char *input[]);
 
 // helper.c
-void					error_print(char *str);
+void					error_print(const char *error);
 void					*safe_malloc(size_t size);
 long					get_time(t_time_code time_code);
 void					better_usleep(long usec, t_data *data);
@@ -133,5 +140,5 @@ bool					all_threads_running(t_mutex *mutex, long *threads,
 void					unsync_philos(t_philo *philo);
 
 // monitor.c
-void	*monitor_dinner(void *nothing);
+void					*monitor_dinner(void *nothing);
 #endif

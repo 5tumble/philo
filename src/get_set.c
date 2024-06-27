@@ -1,52 +1,52 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sync.c                                             :+:      :+:    :+:   */
+/*   get_set.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rukoltso <rukoltso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/18 12:40:12 by rukoltso          #+#    #+#             */
-/*   Updated: 2024/06/24 13:18:40 by rukoltso         ###   ########.fr       */
+/*   Created: 2024/06/18 12:32:47 by rukoltso          #+#    #+#             */
+/*   Updated: 2024/06/27 16:09:53 by rukoltso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../inc/philo.h"
 
-void	wait_all_threads(t_data *data)
-{
-	while (!get_bool(&data->data_mutex, &data->threads_ready))
-		;
-}
-
-void	increase_long(t_mutex *mutex, long *value)
+void	set_bool(t_mutex *mutex, bool *dest, bool value)
 {
 	safe_mutex(mutex, LOCK);
-	(*value)++;
+	*dest = value;
 	safe_mutex(mutex, UNLOCK);
 }
 
-bool	all_threads_running(t_mutex *mutex, long *threads, long philo_nbr)
+bool	get_bool(t_mutex *mutex, bool *value)
 {
 	bool	ret;
 
-	ret = false;
 	safe_mutex(mutex, LOCK);
-	if (*threads == philo_nbr)
-		ret = true;
+	ret = *value;
 	safe_mutex(mutex, UNLOCK);
 	return (ret);
 }
 
-void	unsync_philos(t_philo *philo)
+void	set_long(t_mutex *mutex, long *dest, long value)
 {
-	if (philo->data->philo_nbr % 2 == 0)
-	{
-		if (philo->id % 2 == 0)
-			better_usleep(3e4, philo->data);
-	}
-	else
-	{
-		if (philo->id % 2)
-			write_status(THINKING, philo);
-	}
+	safe_mutex(mutex, LOCK);
+	*dest = value;
+	safe_mutex(mutex, UNLOCK);
+}
+
+long	get_long(t_mutex *mutex, long *value)
+{
+	long	ret;
+
+	safe_mutex(mutex, LOCK);
+	ret = *value;
+	safe_mutex(mutex, UNLOCK);
+	return (ret);
+}
+
+bool	simulation_done(t_data *data)
+{
+	return (get_bool(&data->data_mutex, &data->end_time));
 }

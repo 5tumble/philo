@@ -6,11 +6,11 @@
 /*   By: rukoltso <rukoltso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 13:29:41 by rukoltso          #+#    #+#             */
-/*   Updated: 2024/06/18 15:29:58 by rukoltso         ###   ########.fr       */
+/*   Updated: 2024/06/27 16:30:27 by rukoltso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../inc/philo.h"
 
 static void	handle_mutex_error(int status, t_opcode opcode)
 {
@@ -21,11 +21,11 @@ static void	handle_mutex_error(int status, t_opcode opcode)
 	else if (EINVAL == status && INIT == opcode)
 		error_print("The value specified by mutex is invalid");
 	else if (EDEADLK == status)
-		error_print("A deadlock would occur if the thread blocked waiting for the mutex");
+		error_print("A deadlock would occur waiting for the mutex");
 	else if (EPERM == status)
 		error_print("The current thread does not hold a lock on the mutex");
 	else if (ENOMEM == status)
-		error_print("The process does not have enough memory to create another mutex");
+		error_print("Does not have enough memory for another mutex");
 	else if (EBUSY == status)
 		error_print("The mutex is already locked");
 }
@@ -43,9 +43,9 @@ static void	handle_thread_error(int status, t_opcode opcode)
 	else if (EINVAL == status && (JOIN == opcode || DETACH == opcode))
 		error_print("The value specified by thread is not joinable");
 	else if (ESRCH == status)
-		error_print("No thread could be found corresponding to that specified by the given thread ID");
+		error_print("No thread could be found by the given thread ID");
 	else if (EDEADLK == status)
-		error_print("A deadlock was detected or the value of thread specifies the calling thread");
+		error_print("A deadlock was detected");
 }
 
 void	safe_thread(pthread_t *thread, void *(*func)(void *), void *arg,
